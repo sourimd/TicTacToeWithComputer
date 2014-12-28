@@ -1,0 +1,257 @@
+<html>
+  <head>
+     <script>
+        //This code is applicable when computer is the second player with symbol "O"
+        var currentStatus=['00','00','00','00','00','00','00','00','00','11'];
+        var turn=1;
+
+        function modifyCurrentStatusBasedOnServerResponse(serverResponse){
+          currentStatus[serverResponse-1]='11';
+          document.getElementById(serverResponse-1).value="O";
+
+            if((currentStatus[0]=='11' && currentStatus[1]=='11' && currentStatus[2]=='11') ||
+               (currentStatus[3]=='11' && currentStatus[4]=='11' && currentStatus[5]=='11') ||
+               (currentStatus[6]=='11' && currentStatus[7]=='11' && currentStatus[8]=='11') ||
+               (currentStatus[0]=='11' && currentStatus[3]=='11' && currentStatus[6]=='11') ||
+               (currentStatus[1]=='11' && currentStatus[4]=='11' && currentStatus[7]=='11') ||
+               (currentStatus[2]=='11' && currentStatus[5]=='11' && currentStatus[8]=='11') ||
+               (currentStatus[0]=='11' && currentStatus[4]=='11' && currentStatus[8]=='11') ||
+               (currentStatus[2]=='11' && currentStatus[4]=='11' && currentStatus[6]=='11'))
+              { window.alert('Computer Wins'); window.location="index.html";}
+
+          turn=1;
+
+        }
+
+        function callServer(gamestatus){
+            
+            if (window.XMLHttpRequest)
+                {// code for IE7+, Firefox, Chrome, Opera, Safari
+                    xmlhttp=new XMLHttpRequest();
+                    
+                }
+            else
+                {// code for IE6, IE5
+                    xmlhttp=new ActiveXObject("Microsoft.XMLHTTP");
+                }
+                
+            //xmlhttp.open("GET","responsefromserver.php?gamestatus="+gamestatus,true);
+            xmlhttp.onreadystatechange=function()
+              {
+                  if (xmlhttp.readyState==4 && xmlhttp.status==200)
+                {
+    
+                  var serverResponse=xmlhttp.responseText;
+                  modifyCurrentStatusBasedOnServerResponse(serverResponse);
+                }
+              }
+            xmlhttp.open("GET","responsefromserver.php?gamestatus="+gamestatus,true);
+            xmlhttp.send();
+        }
+
+        function clickedBox(v){
+
+          if(currentStatus[v]=='00' && turn==1){
+            var arr=new Array();
+            var arrtwo=new Array();
+            document.getElementById(v).value="X";
+            currentStatus[v]='01';
+
+            if((currentStatus[0]=='01' && currentStatus[1]=='01' && currentStatus[2]=='01') ||
+               (currentStatus[3]=='01' && currentStatus[4]=='01' && currentStatus[5]=='01') ||
+               (currentStatus[6]=='01' && currentStatus[7]=='01' && currentStatus[8]=='01') ||
+               (currentStatus[0]=='01' && currentStatus[3]=='01' && currentStatus[6]=='01') ||
+               (currentStatus[1]=='01' && currentStatus[4]=='01' && currentStatus[7]=='01') ||
+               (currentStatus[2]=='01' && currentStatus[5]=='01' && currentStatus[8]=='01') ||
+               (currentStatus[0]=='01' && currentStatus[4]=='01' && currentStatus[8]=='01') ||
+               (currentStatus[2]=='01' && currentStatus[4]=='01' && currentStatus[6]=='01'))
+              { window.alert('Player Wins'); window.location="index.html";}
+
+            turn=2;
+            //window.alert(currentStatus);
+            var j=0;
+            for(var i=0;i<5;i++){
+              arr[i]=currentStatus[j]+currentStatus[j+1];
+              j=j+2;
+            }
+           // window.alert(arr);
+            for(var j=0;j<5;j++){
+                switch(arr[j]){
+                   case '0000':
+                      arrtwo[j]='0';
+                      //j++;
+                      break;
+                   case '0001':
+                      arrtwo[j]='1';
+                      //j++;
+                      break;
+                   case '0010':
+                      arrtwo[j]='2';
+                      //j++;
+                      break;
+                   case '0011':
+                      arrtwo[j]='3';
+                      //j++;
+                      break;
+                   case '0100':
+                      arrtwo[j]='4';
+                      //j++;
+                      break;
+                   case '0101':
+                      arrtwo[j]='5';
+                      //j++;
+                      break;
+                   case '0110':
+                      arrtwo[j]='6';
+                      //j++;
+                      break;
+                   case '0111':
+                      arrtwo[j]='7';
+                      //j++;
+                      break;
+                   case '1000':
+                      arrtwo[j]='8';
+                      //j++;
+                      break;
+                   case '1001':
+                      arrtwo[j]='9';
+                      //j++;
+                      break;      
+                   case '1010':
+                      arrtwo[j]='A';
+                      //j++;
+                      break;       
+                   case '1011':
+                      arrtwo[j]='B';
+                      //j++;
+                      break;                      
+                   case '1100':
+                     arrtwo[j]='C';
+                     //j++;
+                     break;        
+                   case '1101':
+                     arrtwo[j]='D';
+                     //j++;
+                     break;
+                   case '1110':
+                     arrtwo[j]='E';
+                     //j++;
+                     break;       
+                   case '1111':
+                    arrtwo[j]='F';
+                    //j++;
+                    break;
+                }
+            }
+               //window.alert(arrtwo);
+               var gamestatus=arrtwo[0]+arrtwo[1]+arrtwo[2]+arrtwo[3]+arrtwo[4];
+               callServer(gamestatus);
+             }
+             else window.alert("The box you clicked is taken or it is not your turn");
+        }
+
+        function whenCompPlayFirst(){
+          document.getElementById("CmpPlay").disabled = true; 
+          //window.alert('here');
+          var arr=new Array();
+          var arrtwo=new Array();
+          turn=2;
+          //currentStatus[9]='01';
+          var j=0;
+          //window.alert('here');
+            for(var i=0;i<5;i++){
+              arr[i]=currentStatus[j]+currentStatus[j+1];
+              j=j+2;
+            }
+            //window.alert('here');
+            //window.alert(arr);
+            for(var j=0;j<5;j++){
+                switch(arr[j]){
+                   case '0000':
+                      arrtwo[j]='0';
+                      //j++;
+                      break;
+                   case '0001':
+                      arrtwo[j]='1';
+                      //j++;
+                      break;
+                   case '0010':
+                      arrtwo[j]='2';
+                      //j++;
+                      break;
+                   case '0011':
+                      arrtwo[j]='3';
+                      //j++;
+                      break;
+                   case '0100':
+                      arrtwo[j]='4';
+                      //j++;
+                      break;
+                   case '0101':
+                      arrtwo[j]='5';
+                      //j++;
+                      break;
+                   case '0110':
+                      arrtwo[j]='6';
+                      //j++;
+                      break;
+                   case '0111':
+                      arrtwo[j]='7';
+                      //j++;
+                      break;
+                   case '1000':
+                      arrtwo[j]='8';
+                      //j++;
+                      break;
+                   case '1001':
+                      arrtwo[j]='9';
+                      //j++;
+                      break;      
+                   case '1010':
+                      arrtwo[j]='A';
+                      //j++;
+                      break;       
+                   case '1011':
+                      arrtwo[j]='B';
+                      //j++;
+                      break;                      
+                   case '1100':
+                     arrtwo[j]='C';
+                     //j++;
+                     break;        
+                   case '1101':
+                     arrtwo[j]='D';
+                     //j++;
+                     break;
+                   case '1110':
+                     arrtwo[j]='E';
+                     //j++;
+                     break;       
+                   case '1111':
+                    arrtwo[j]='F';
+                    //j++;
+                    break;
+                }
+            }
+               //window.alert(arrtwo);
+               var gamestatus=arrtwo[0]+arrtwo[1]+arrtwo[2]+arrtwo[3]+arrtwo[4];
+               callServer(gamestatus);
+
+        }
+     </script>
+  </head>
+  <body>
+      <input type="button" style="height:50px; width:50px" value=" " id="0" onClick="clickedBox(this.id);"/>
+      <input type="button" style="height:50px; width:50px" value=" " id="1" onClick="clickedBox(this.id);"/>
+      <input type="button" style="height:50px; width:50px" value=" " id="2" onClick="clickedBox(this.id);"/><br/>
+      <input type="button" style="height:50px; width:50px" value=" " id="3" onClick="clickedBox(this.id);"/>
+      <input type="button" style="height:50px; width:50px" value=" " id="4" onClick="clickedBox(this.id);"/>
+      <input type="button" style="height:50px; width:50px" value=" " id="5" onClick="clickedBox(this.id);"/><br/>
+      <input type="button" style="height:50px; width:50px" value=" " id="6" onClick="clickedBox(this.id);"/>
+      <input type="button" style="height:50px; width:50px" value=" " id="7" onClick="clickedBox(this.id);"/>
+      <input type="button" style="height:50px; width:50px" value=" " id="8" onClick="clickedBox(this.id);"/>
+      <br/><br/>
+      <input type="button" value="Computer Play First" id="CmpPlay" onClick="whenCompPlayFirst();"/>
+      <input type="button" value="Reset" id="CmpPlay" onClick="window.location='thegame.html';"/>
+  </body>
+</html>
